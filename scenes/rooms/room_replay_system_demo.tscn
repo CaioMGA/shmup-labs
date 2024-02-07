@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxrg2bvuiwck8"]
+
+[ext_resource type="Script" path="res://scripts/ReplaySystem/ReplayDemoScene.gd" id="1_do2i8"]
+[ext_resource type="PackedScene" uid="uid://pxgxvp8xf82a" path="res://scenes/player.tscn" id="2_67k75"]
+[ext_resource type="Script" path="res://scripts/ReplaySystem/InputRecorder.gd" id="3_reo1o"]
+[ext_resource type="Script" path="res://scripts/ReplaySystem/Replayer.gd" id="4_ft0x3"]
+
+[node name="Replay Demo Scene" type="Node"]
+script = ExtResource("1_do2i8")
+
+[node name="Player" parent="." instance=ExtResource("2_67k75")]
+position = Vector2(74, 77)
+
+[node name="InputRecorder" type="Node" parent="."]
+script = ExtResource("3_reo1o")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Start Recording" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Record"
+
+[node name="Stop Recording" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Stop Recording"
+
+[node name="Save Replay" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Save Replay"
+
+[node name="Load Replay" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Load Replay"
+
+[node name="Play Replay" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Replay"
+
+[node name="Restart Scene" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Restart Scene
+"
+
+[node name="CurrentFrame" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Replayer" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("4_ft0x3")
+player = NodePath("../Player")
+
+[connection signal="button_down" from="VBoxContainer/Start Recording" to="InputRecorder" method="start_recording"]
+[connection signal="button_down" from="VBoxContainer/Stop Recording" to="InputRecorder" method="stop_recording"]
+[connection signal="button_down" from="VBoxContainer/Save Replay" to="InputRecorder" method="save_json"]
+[connection signal="button_down" from="VBoxContainer/Load Replay" to="Replayer" method="load_json"]
+[connection signal="button_down" from="VBoxContainer/Play Replay" to="Replayer" method="play"]
+[connection signal="button_down" from="VBoxContainer/Restart Scene" to="." method="restart_scene"]
